@@ -61,7 +61,33 @@ Though if you just want this to run every minute it is pretty easy to remember:
 * * * * /path/to/file/
 ```
 
+## Making it all work
+
+### HTTPServer
+
+The magic happens on the attacks machine.  Using a python module called SimpleHTTPServer we can set up a server that can contain our key file.  This is the server that the victim machine will call back to.  
+
+First, for this to work you will need python3 installed: 
+
+```
+sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt install python3
+```
+
+To start the server:
+
+```
+python -m SimpleHTTPServer
+```
+
+Keep in mind that whatever directory you start the server in, is the content it will server.  I like to create a designated directory to run the server in.  In you want the victim machine to set up a new session:
+
+```
+touch /path/to/server/callme
+```
+If you have a session established, remove the key file so that the victim machine does not keep try to set up a session every time the cron job is run.
+
 That is pretty much it.  Once the cron job is set then it will check at the specified time if the remote resource is available.  If it is, then it open the meterpreter session.  If not, then it waits until the next time, working on a loop until the logic is met.
+
 
 
 
